@@ -1,26 +1,41 @@
-name: Deploy to Firebase Hosting on merge
-'on':
+name: Deploy to Firebase Hosting
+
+on:
   push:
     branches:
-      - main
+      - main # or the branch you want to trigger the deployment
+
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - run: 'npm i'
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ARSUS_PRODUCTION }}'
-          channelId: live
-          projectId: arsus-production
-        env:
-          REACT_APP_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          REACT_APP_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-          REACT_APP_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
-          REACT_APP_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          REACT_APP_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-          REACT_APP_MESSAGING_SEND_ID: ${{ secrets.FIREBASE_MESSAGING_SEND_ID }}
-          REACT_APP_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          REACT_APP_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+          node-version: "14" # or the version you need
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build # or the build command you use
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live # or the channel ID you want to deploy to
+
+    env:
+      REACT_APP_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      REACT_APP_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+      REACT_APP_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+      REACT_APP_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      REACT_APP_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+      REACT_APP_MESSAGING_SEND_ID: ${{ secrets.FIREBASE_MESSAGING_SEND_ID }}
+      REACT_APP_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      REACT_APP_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
