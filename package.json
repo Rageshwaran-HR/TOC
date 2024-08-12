@@ -2,6 +2,7 @@
   "name": "theory-of-computation",
   "version": "1.0.1",
   "private": true,
+  
   "dependencies": {
     "cross-env": "^7.0.3",
     "firebase": "^9.6.7",
@@ -31,8 +32,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider node -r dotenv/config node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production node_modules/react-scripts/bin/react-scripts.js build --stats && mv build/index.html build/app.html",
-    "test": "react-scripts test",
+    "build": "cross-env NODE_ENV=production node_modules/react-scripts/bin/react-scripts.js build --stats && mv build/index.html build/app.html",    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "firebase deploy",
     "e2e": "node -r dotenv/config node_modules/cypress/bin/cypress open"
